@@ -1,3 +1,11 @@
+/**
+ *
+ * Cards
+ *
+ *Version: 0.0.0
+ *Author: Jeff Turcotte <jeff@imarc.com>
+ */
+
 var cards = (function(obj) {
 	function getScrollRoot(){
 		var offset = document.body.scrollTop;
