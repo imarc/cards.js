@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Hind);
+
 * {
   box-sizing: border-box;
 }
@@ -8,6 +10,10 @@ html, body {
   margin: 0;
   font-size: 21px;
   font-family: Arial;
+}
+
+h1,h2,h3,h4,h5 {
+  font-family: 'Hind', sans-serif;
 }
 
 .container {
@@ -37,7 +43,12 @@ html, body {
   vertical-align: center;
 }
 
-
+.page-header {
+  color: #fff;
+  text-align: center;
+  background-color: #229ab7;
+  height: 300px;
+}
 
 .cards > *:nth-of-type(1) {
   background: salmon;
