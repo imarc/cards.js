@@ -6,6 +6,8 @@
  */
 
 var cards = function(selector) {
+    var stickIndex = 0;
+    var activeOpacity = 0;
     var container = document.querySelector(selector);
     var cards = [].slice.call(container.children);
 
@@ -17,31 +19,31 @@ var cards = function(selector) {
         }
     };
 
-	var stickCards = function(cards, opacity) {
-		for(var i = 0; i < cards.length; i++) {
-			cards[i].style.position = 'fixed';
-			cards[i].style.top = '1px';
-			cards[i].style.opacity = i === 0 ? opacity : 0;
+	var stickCards = function() {
+        var stuckCards = cards.slice(stickIndex);
+		for(var i = 0; i < stuckCards.length; i++) {
+			stuckCards[i].style.position = 'fixed';
+			stuckCards[i].style.top = '1px';
+			stuckCards[i].style.opacity = i === 0 ? activeOpacity : 0;
 		}
 	};
 
-	var unstickCards = function(cards) {
-		for(var i = 0; i < cards.length; i++) {
-			cards[i].style.opacity = 1;
-			cards[i].style.position = 'absolute';
-			cards[i].style.top = (i * 100) + 'vh';
+	var unstickCards = function() {
+        var fluidCards = cards.slice(0, stickIndex);
+		for(var i = 0; i < fluidCards.length; i++) {
+			fluidCards[i].style.opacity = 1;
+			fluidCards[i].style.position = 'absolute';
+			fluidCards[i].style.top = (i * 100) + 'vh';
 		}
 	};
 
     var updateCards = function() {
         var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
-        var activeIndex = Math.abs(Math.floor(scroll));
-        var activeOpacity = scroll % 1;
-        var fluidCards = cards.slice(0, activeIndex + 1);
-        var stuckCards = cards.slice(activeIndex + 1);
+        stickIndex = Math.abs(Math.floor(scroll)) + 1;
+        activeOpacity = scroll % 1;
 
-        unstickCards(fluidCards);
-        stickCards(stuckCards, activeOpacity);
+        unstickCards();
+        stickCards();
 
         window.requestAnimationFrame(updateCards);
     };
