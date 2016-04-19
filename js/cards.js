@@ -38,7 +38,7 @@ var cards = function(selector) {
     var updateCards = function() {
         var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
         console.log(scroll);
-        stickIndex = Math.abs(Math.floor(scroll)) + 1;
+        stickIndex = Math.max(0, Math.floor(scroll) + 1);
         activeOpacity = scroll % 1;
 
         unstickCards();
