@@ -53,11 +53,7 @@ var cards = function(selector) {
      */
     var updateCards = function() {
         var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
-        startSticking = Math.floor(scroll) + 1;
-        if (startSticking <= 0) {
-            startSticking = cards.length;
-        }
-
+        startSticking = Math.max(1, Math.floor(scroll) + 1);
         activeOpacity = scroll % 1;
 
         unstickCards();
