@@ -20,25 +20,24 @@ var cards = function(selector) {
     };
 
 	var stickCards = function() {
-        var stuckCards = cards.slice(stickIndex);
-		for(var i = 0; i < stuckCards.length; i++) {
-			stuckCards[i].style.position = 'fixed';
-			stuckCards[i].style.top = '1px';
-			stuckCards[i].style.opacity = i === 0 ? activeOpacity : 0;
+		for(var i = stickIndex; i < cards.length; i++) {
+			cards[i].style.position = 'fixed';
+			cards[i].style.top = '1px';
+			cards[i].style.opacity = i === stickIndex ? activeOpacity : 0;
 		}
 	};
 
 	var unstickCards = function() {
-        var fluidCards = cards.slice(0, stickIndex);
-		for(var i = 0; i < fluidCards.length; i++) {
-			fluidCards[i].style.opacity = 1;
-			fluidCards[i].style.position = 'absolute';
-			fluidCards[i].style.top = (i * 100) + 'vh';
+		for(var i = 0; i < stickIndex; i++) {
+			cards[i].style.opacity = 1;
+			cards[i].style.position = 'absolute';
+			cards[i].style.top = (i * 100) + 'vh';
 		}
 	};
 
     var updateCards = function() {
         var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
+        console.log(scroll);
         stickIndex = Math.abs(Math.floor(scroll)) + 1;
         activeOpacity = scroll % 1;
 
