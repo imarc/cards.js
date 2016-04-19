@@ -2,8 +2,8 @@
  *
  * Cards
  *
- *Version: 0.0.0
- *Author: Jeff Turcotte <jeff@imarc.com>
+ * Version: 0.0.0
+ * Author: Jeff Turcotte <jeff@imarc.com>
  */
 
 var cards = (function(obj) {
@@ -12,7 +12,7 @@ var cards = (function(obj) {
 		for(var i = 0; i < cards.length; i++) {
 			cards[i].style.position = 'fixed';
 			cards[i].style.top = '1px';
-			cards[i].style.opacity = i === 0 ? offset: 0;
+			cards[i].style.opacity = i === 0 ? offset : 0;
 		}
 	};
 
@@ -29,7 +29,7 @@ var cards = (function(obj) {
 		var cards = [].slice.call(container.children);
 		var zIndex = 1;
 
-		for (var i = cards.length-1 ; i >= 0; i--) {
+		for (var i = cards.length - 1; i >= 0; i--) {
 			cards[i].style.zIndex = zIndex++;
 		}
 
