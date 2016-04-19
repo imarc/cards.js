@@ -1,5 +1,6 @@
 /**
- * Cards
+ * Cards.js provides a 'stacked cards' effect where, on scroll, each cards is
+ * sequentially scrolled off the top of the stack.
  *
  * @version 0.0.0
  * @author  Jeff Turcotte <jeff@imarc.com>
@@ -11,6 +12,10 @@ var cards = function(selector) {
     var container = document.querySelector(selector);
     var cards = [].slice.call(container.children);
 
+    /**
+     * Initializes cards z-indexes so that the first card has the highest
+     * z-index and it decreases for each subsequent card.
+     */
     var initializeZIndex = function() {
         var zIndex = 1;
 
@@ -19,6 +24,9 @@ var cards = function(selector) {
         }
     };
 
+    /**
+     * Updates all cards before startSticking to be unstuck.
+     */
 	var unstickCards = function() {
 		for(var i = 0; i < startSticking; i++) {
 			cards[i].style.opacity = 1;
@@ -27,6 +35,9 @@ var cards = function(selector) {
 		}
 	};
 
+    /**
+     * Updates all cards starting at startIndex to be stuck.
+     */
 	var stickCards = function() {
 		for(var i = startSticking; i < cards.length; i++) {
 			cards[i].style.position = 'fixed';
@@ -35,6 +46,11 @@ var cards = function(selector) {
 		}
 	};
 
+    /**
+     * This function is called endlessly (via requestAnimationFrame) and
+     * updates which cards should be stuck as well as the opacity of the active
+     * card based on the current scroll position and window.innerHeight.
+     */
     var updateCards = function() {
         var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
         startSticking = Math.max(0, Math.floor(scroll) + 1);
@@ -46,6 +62,9 @@ var cards = function(selector) {
         window.requestAnimationFrame(updateCards);
     };
 
+    /**
+     * Initialization
+     */
     initializeZIndex();
     container.style.height = (cards.length * 100)  + 'vh';
     window.requestAnimationFrame(updateCards);
