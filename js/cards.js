@@ -17,11 +17,11 @@ var cards = function(selector) {
         }
     };
 
-	var stickCards = function(cards, offset) {
+	var stickCards = function(cards, opacity) {
 		for(var i = 0; i < cards.length; i++) {
 			cards[i].style.position = 'fixed';
 			cards[i].style.top = '1px';
-			cards[i].style.opacity = i === 0 ? offset : 0;
+			cards[i].style.opacity = i === 0 ? opacity : 0;
 		}
 	};
 
@@ -36,12 +36,12 @@ var cards = function(selector) {
     var updateCards = function() {
         var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
         var activeIndex = Math.abs(Math.floor(scroll));
-        var activeOffset = scroll % 1;
+        var activeOpacity = scroll % 1;
         var fluidCards = cards.slice(0, activeIndex + 1);
         var stuckCards = cards.slice(activeIndex + 1);
 
         unstickCards(fluidCards);
-        stickCards(stuckCards, activeOffset);
+        stickCards(stuckCards, activeOpacity);
 
         window.requestAnimationFrame(updateCards);
     };
