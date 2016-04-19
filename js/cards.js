@@ -41,7 +41,7 @@ var cards = function(selector) {
 	var stickCards = function() {
 		for(var i = startSticking; i < cards.length; i++) {
 			cards[i].style.position = 'fixed';
-			cards[i].style.top = '1px';
+			cards[i].style.top = 0;
 			cards[i].style.opacity = i === startSticking ? activeOpacity : 0;
 		}
 	};
