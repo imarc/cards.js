@@ -51,4 +51,4 @@ var cards = (function(obj) {
 	};
 
 	return obj;
-})({} || cards);
+})(cards || {});
