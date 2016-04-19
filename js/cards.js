@@ -1,9 +1,8 @@
 /**
- *
  * Cards
  *
- * Version: 0.0.0
- * Author: Jeff Turcotte <jeff@imarc.com>
+ * @version 0.0.0
+ * @author  Jeff Turcotte <jeff@imarc.com>
  */
 
 var cards = (function(obj) {
@@ -36,7 +35,7 @@ var cards = (function(obj) {
 		stickCards(cards);
 		container.style.height = (cards.length * 100)  + 'vh';
 
-		window.requestAnimationFrame(function self() {
+        var updateCards = function() {
 			var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
 			var activeIndex = Math.abs(Math.floor(scroll));
 			var activeOffset = scroll % 1;
@@ -46,8 +45,9 @@ var cards = (function(obj) {
 			unstickCards(fluidCards);
 			stickCards(stuckCards, activeOffset);
 
-			window.requestAnimationFrame(self);
+			window.requestAnimationFrame(updateCards);
 		});
+		window.requestAnimationFrame(updateCards);
 	};
 
 	return obj;
