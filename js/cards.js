@@ -7,19 +7,6 @@
  */
 
 var cards = (function(obj) {
-	function getScrollRoot(){
-		var offset = document.body.scrollTop;
-		document.body.scrollTop = offset + 1;
-
-		if (document.body.scrollTop === 0) {
-			document.body.scrollTop = offset;
-			return document.documentElement;
-		}
-
-		return document.body;
-	}
-
-	var body = getScrollRoot();
 
 	var stickCards = function(cards, offset) {
 		for(var i = 0; i < cards.length; i++) {
@@ -50,7 +37,7 @@ var cards = (function(obj) {
 		container.style.height = (cards.length * 100)  + 'vh';
 
 		window.requestAnimationFrame(function self() {
-			var scroll = (body.scrollTop - container.offsetTop) / window.innerHeight;
+			var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
 			var activeIndex = Math.abs(Math.floor(scroll));
 			var activeOffset = scroll % 1;
 			var fluidCards = cards.slice(0, activeIndex + 1);
