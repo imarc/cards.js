@@ -2,7 +2,7 @@
  * Cards.js provides a 'stacked cards' effect where, on scroll, each cards is
  * sequentially scrolled off the top of the stack.
  *
- * @version 0.0.0
+ * @version 0.0.1
  * @author  Jeff Turcotte <jeff@imarc.com>
  */
 
