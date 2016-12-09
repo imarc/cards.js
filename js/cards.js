@@ -1,67 +1,71 @@
 /**
+ * Cards.js provides a 'stacked cards' effect where, on scroll, each cards is
+ * sequentially scrolled off the top of the stack.
  *
- * Cards
- *
- *Version: 0.0.0
- *Author: Jeff Turcotte <jeff@imarc.com>
+ * @version 0.0.1
+ * @author  Jeff Turcotte <jeff@imarc.com>
  */
 
-var cards = (function(obj) {
-	function getScrollRoot(){
-		var offset = document.body.scrollTop;
-		document.body.scrollTop = offset + 1;
+var cards = function(selector) {
+    var startSticking = 0;
+    var activeOpacity = 0;
+    var container = document.querySelector(selector);
+    var cards = [].slice.call(container.children);
 
-		if (document.body.scrollTop === 0) {
-			document.body.scrollTop = offset;
-			return document.documentElement;
-		}
+    /**
+     * Initializes cards z-indexes so that the first card has the highest
+     * z-index and it decreases for each subsequent card.
+     */
+    var initializeZIndex = function() {
+        var zIndex = 1;
 
-		return document.body;
-	}
+        for (var i = cards.length - 1; i >= 0; i--) {
+            cards[i].style.zIndex = zIndex++;
+        }
+    };
 
-	var body = getScrollRoot();
-
-	var stickCards = function(cards, offset) {
-		for(var i = 0; i < cards.length; i++) {
-			cards[i].style.position = 'fixed';
-			cards[i].style.top = '1px';
-			cards[i].style.opacity = i === 0 ? offset: 0;
-		}
-	};
-
-	var unstickCards = function(cards) {
-		for(var i = 0; i < cards.length; i++) {
+    /**
+     * Updates all cards before startSticking to be unstuck.
+     */
+	var unstickCards = function() {
+		for(var i = 0; i < startSticking; i++) {
 			cards[i].style.opacity = 1;
 			cards[i].style.position = 'absolute';
 			cards[i].style.top = (i * 100) + 'vh';
 		}
 	};
 
-	obj.init = function(selector) {
-		var container = document.querySelector(selector);
-		var cards = [].slice.call(container.children);
-		var zIndex = 1;
-
-		for (var i = cards.length-1 ; i >= 0; i--) {
-			cards[i].style.zIndex = zIndex++;
+    /**
+     * Updates all cards starting at startIndex to be stuck.
+     */
+	var stickCards = function() {
+		for(var i = startSticking; i < cards.length; i++) {
+			cards[i].style.position = 'fixed';
+			cards[i].style.top = 0;
+			cards[i].style.opacity = i === startSticking ? activeOpacity : 0;
 		}
-
-		stickCards(cards);
-		container.style.height = (cards.length * 100)  + 'vh';
-
-		window.requestAnimationFrame(function self() {
-			var scroll = (body.scrollTop - container.offsetTop) / window.innerHeight;
-			var activeIndex = Math.abs(Math.floor(scroll));
-			var activeOffset = scroll % 1;
-			var fluidCards = cards.slice(0, activeIndex + 1);
-			var stuckCards = cards.slice(activeIndex + 1);
-
-			unstickCards(fluidCards);
-			stickCards(stuckCards, activeOffset);
-
-			window.requestAnimationFrame(self);
-		});
 	};
 
-	return obj;
-})({} || cards);
+    /**
+     * This function is called endlessly (via requestAnimationFrame) and
+     * updates which cards should be stuck as well as the opacity of the active
+     * card based on the current scroll position and window.innerHeight.
+     */
+    var updateCards = function() {
+        var scroll = (window.pageYOffset - container.offsetTop) / window.innerHeight;
+        startSticking = Math.max(1, Math.floor(scroll) + 1);
+        activeOpacity = scroll % 1;
+
+        unstickCards();
+        stickCards();
+
+        window.requestAnimationFrame(updateCards);
+    };
+
+    /**
+     * Initialization
+     */
+    initializeZIndex();
+    container.style.height = (cards.length * 100)  + 'vh';
+    window.requestAnimationFrame(updateCards);
+};
